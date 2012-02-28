@@ -13,7 +13,9 @@
 
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
+	<link rel="stylesheet" type="text/css" href="style.css" />
 	<link rel="stylesheet" href="normalize.css" media="screen" />
+
 
 	<script src="modernizr-2.5.3.js"></script>
 </head>
@@ -31,51 +33,67 @@
 				<legend>Personal Information</legend>
 
 				<label for="name">Name</label>
-				<input type="text" name="name" id="name" />
+				<input type="text" class="rounded shadowed" name="name" id="name" autofocus required  />
 
 				<label for="age">Age</label>
-				<input type="number" name="age" id="age" />
+				<input type="number" class="rounded shadowed" name="age" id="age"  pattern="^(([1-9]*)|(([1-9]*).([0-9]*)))$" placeholder="enter your age" required />
 
 				<label for="email">Email</label>
-				<input type="email" name="email" id="email" />
-
+				<input type="email"  class="rounded shadowed" name="email" id="email" pattern="\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b" placeholder="you@domain.com" required />
+				
 				<label for="dayjob">Day Job</label>
-				<input type="text" name="dayjob" id="dayjob" />
+				<input type="text" class="rounded shadowed" name="dayjob" id="dayjob"required />
 
 				<label for="startdate">Start Date</label>
-				<input type="date" name="startdate" id="startdate" />
+				<input type="date" class="rounded shadowed" name="startdate" id="startdate" pattern="^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$" placeholder="YYYY-MM-DD" required />
 
 				<label for="blogurl">Blog URL</label>
-				<input type="url" name="blogurl" id="blogurl" />
+				<input type="url" class="rounded shadowed" name="blogurl" id="blogurl" pattern="/^(http|https|ftp):\/\/([\w]*)\.([\w]*)\.(com|net|org|biz|info|mobi|us|cc|bz|tv|ws|name|co|me)(\.[a-z]{1,3})?\z/i" placeholder="http://domain.whatevs" />
 			</fieldset>
 
 			<fieldset>
 				<legend>Vigilante Details</legend>
 
 				<label for="vigilantename">Name</label>
-				<input type="text" name="vigilantename" id="vigilantename" />
+				<input type="text" class="rounded shadowed" name="vigilantename" id="vigilantename" required/>
 
 				<label for="symbol">Symbol</label>
-				<input type="text" name="symbol" id="symbol" />
+				<input type="text" class="rounded shadowed" name="symbol" id="symbol" required />
 
 				<label for="primarycolor">Primary Color</label>
-				<input type="color" name="primarycolor" id="primarycolor" />
+				<input type="color" class="rounded shadowed" name="primarycolor" id="primarycolor" />
+				
 
 				<label for="motivations">Motivations</label>
-				<select name="motivations" id="motivations" multiple size="8">
+				<select name="motivations" class="rounded shadowed" id="motivations" multiple size="8" required>
 					<option value="parentskilled">Parents Killed In Front Me</option>
+					<option value="bullied">Bullied In School</option>
+					<option value="mugged">Got Mugged Delivering Pizzas</option>
+					<option value="cops">Cops Don't Do Nuttin</option>
+					<option value="underwear">Someone Stole Underwear From Laundry</option>
+					<option value="hedgefund">Lost All Money In HedgeFund</option>
+					<option value="walmart">Nowhere to Shop But Walmart</option>
+					<option value="law">Cuz I'm Judge and Jury</option>
 					<!-- create at least 7 more vigilante motivations. must stay a multi-select. -->
 				</select>
 
 				<label for="weapon">Weapon of Choice</label>
-				<select name="weapon" id="weapon">
-					<option value=""></option>
+				<select name="weapon" class="rounded shadowed" id="weapon" required>
+					<option value="blowdart">Blowdart</option>
 					<option value="fists">Bare Fists</option>
+					<option value="crobar">Crobar</option>
+					<option value="nunchuks">Nunchuks</option>
+					<option value="cord">Telephone Cord</option>
+					<option value="staff">+10 Staff</option>
+					<option value="brassknuckles">Brass Knuckles</option>
+					<option value="m40">M40</option>
 					<!-- create at least 7 more weapon options. must stay a single select. -->
 				</select>
-
+				
+				<div id="why">
 				<label for="reason">Why Should We Choose You?</label>
-				<textarea name="reason" id="reason"></textarea>
+				<textarea name="reason" class="rounded shadowed" id="reason" required></textarea>
+				</div>
 			</fieldset>
 
 			<fieldset>
@@ -84,10 +102,11 @@
 				<p>To ensure only qualified people apply, enter your pre-assigned unique vigilante invite code blow.</p>
 
 				<label for="code">Vigilante Code</label>
-				<input type="text" name="code" id="code" />
+				<input type="text" class="rounded shadowed" name="code" id="code" pattern="^([a-zA-Z0-9]{7,10})$" placeholder="7-10 alphanumeric" required />
 			</fieldset>
-
-			<button type="submit" id="submit">Submit Application</button>
+			<br/>
+			<button type="submit" class="rounded" id="submit">Submit Application</button>
+			<button type="reset" class="rounded" id="clear" value="Reset Form">Wipe it</button>
 		</form>
 	</section>
 	<footer>
@@ -104,9 +123,11 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 
 <script type="text/javascript">
-	// wait until the page is fully loaded to start firing our javascript
+	// wait until the pemail is fully loaded to start firing our javascript
 	$(document).ready(function() {
-		// call function that will populate form with info from local storage
+		// call function that will populate form with info from local storemail
+		
+		var clear = $('#clear');
 		populate_form_with_stored_info();
 
 		// store the name every time a user types in the name field
@@ -117,19 +138,201 @@
 			}
 		});
 
+		$('#age').bind("change click mousedown keyup keydown", function() {
+			if ($('#age').val() != '') {
+				localStorage.setItem('age', $('#age').val());
+
+			}
+		});
+
+		$('#email').keyup(function() {
+			if ($('#email').val() != '') {
+				localStorage.setItem('email', $('#email').val());
+			}
+		});
+
+		$('#dayjob').keyup(function() {
+			if ($('#dayjob').val() != '') {
+				localStorage.setItem('dayjob', $('#dayjob').val());
+			}
+		});
+
+		$('#startdate').keyup(function() {
+			if ($('#startdate').val() != '') {
+				localStorage.setItem('startdate', $('#startdate').val());
+			}
+		});
+
+		$('#blogurl').keyup(function() {
+			if ($('#blogurl').val() != '') {
+				localStorage.setItem('blogurl', $('#blogurl').val());
+			}
+		}); 
+
+		$('#vigilantename').keyup(function() {
+			if ($('#vigilantename').val() != '') {
+				localStorage.setItem('vigilantename', $('#vigilantename').val());
+			}
+		});
+
+		$('#symbol').keyup(function() {
+			if($('#symbol').val() != '') {
+				localStorage.setItem('symbol', $('#symbol').val());
+			}
+		});
+
+		$('#primarycolor').keyup(function() {
+			if($('#primarycolor').val() != '') {
+				localStorage.setItem('primarycolor', $('#primarycolor').val());
+			}
+		});
+
+		$('#motivations').change(function() {
+			var selected = [];
+
+			$('#motivations option').each(function() {
+				if (this.selected) {
+						selected.push(this.value);
+				}
+
+			});
+
+			localStorage.setItem('motivations', JSON.stringify(selected));
+		
+		});
+
+
+		$('#reason').keyup(function() {
+			if($('#reason').val() != ''){
+				localStorage.setItem('reason', $('#reason').val());
+			}
+		});
+
+		$('#weapon').change(function() {
+			if($('weapon').val() != ''){
+				localStorage.setItem('weapon', $('#weapon').val());
+			}
+		});
+
+		$('#clear').click(function() {
+
+				window.localStorage.clear();
+				// variable declaration
+			    var x, y, z, type = null;
+			    // loop through forms on HTML page
+			    for (x = 0; x < document.forms.length; x++) {
+			        // loop through each element on form
+			        for (y = 0; y < document.forms[x].elements.length; y++) {
+			            // define element type
+			            type = document.forms[x].elements[y].type;
+			            // alert before erasing form element
+			            //alert('form='+x+' element='+y+' type='+type);
+			            // switch on element type
+			            switch (type) {
+			            case 'number':
+			            case 'email' :
+			            case 'text':
+			            case 'textarea':
+			            case 'password':
+			            //case "hidden":
+			                document.forms[x].elements[y].value = '';
+			                break;
+			            case 'radio':
+			            case 'checkbox':
+			                document.forms[x].elements[y].checked = '';
+			                break;
+			            case 'select-one':
+			                document.forms[x].elements[y].options[0].selected = true;
+			                break;
+			            case 'select-multiple':
+			                for (z = 0; z < document.forms[x].elements[y].options.length; z++) {
+			                    document.forms[x].elements[y].options[z].selected = false;
+			                }
+			                break;
+			            } // end switch
+			        } // end for y
+			    } // end for x
+		});
+
+
 		// for an example of storing information from a multiple select,
 		// see line 266 from the objects demo from the slides 
-		// http://iam.colum.edu/Jon.Petto/ewt/local-storage/demo/objects.php
+		// http://iam.colum.edu/Jon.Petto/ewt/local-storemail/demo/objects.php
 	});
 
 	function populate_form_with_stored_info() {
 		// check for stored name
 		var stored_name = localStorage.getItem('name');
+		var stored_age = localStorage.getItem('age');
+		var stored_email = localStorage.getItem('email');
+		var stored_dayjob = localStorage.getItem('dayjob');
+		var stored_startdate = localStorage.getItem('startdate');
+		var stored_blogurl = localStorage.getItem('blogurl');
+		var stored_vigilantename = localStorage.getItem('vigilantename');
+		var stored_symbol = localStorage.getItem('symbol');
+		var stored_primarycolor = localStorage.getItem('primarycolor');
+		var stored_motivations = JSON.parse(localStorage.getItem('motivations'));
+		var stored_reason = localStorage.getItem('reason');
+		var stored_weapon = localStorage.getItem('weapon');
+		
+
+
 		if (stored_name !== '') {
 			$('#name').val(stored_name);
+			console.log(stored_name);
 		}
 
-		// check for stored age...
+		if (stored_age !== '') {
+			$('#age').val(stored_age);
+		}
+
+		if (stored_email !== '') {
+			$('#email').val(stored_email);
+			console.log(stored_email);
+		}
+
+		if (stored_dayjob !== '') {
+			$('#dayjob').val(stored_dayjob);
+		}
+
+		if (stored_startdate !== '') {
+			$('#startdate').val(stored_startdate);
+		}
+
+		if (stored_blogurl !== '') {
+			$('#blogurl').val(stored_blogurl);
+		}
+
+		if (stored_vigilantename !== '') {
+			$('#vigilantename').val(stored_vigilantename);
+		}
+
+		if (stored_symbol !== '') {
+			$('#symbol').val(stored_symbol);
+		}
+
+		if (stored_primarycolor != '') {
+			$('#primarycolor').val(stored_primarycolor);
+		}
+
+		if (stored_motivations !== null) {
+			$('#motivations option').each(function() {
+				for (var i = 0; i < stored_motivations.length; i++) {
+					if (this.value == stored_motivations[i]) {
+						this.selected = true;
+					}
+				}
+			});
+		}
+
+		if (stored_reason != '') {
+			$('#reason').val(stored_reason);
+		}
+
+		if (stored_weapon !== null) {
+			$('#weapon').val(stored_weapon);
+		}
+		// check for stored email...
 	}
 </script>
 
