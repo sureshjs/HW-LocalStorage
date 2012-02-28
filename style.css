@@ -3,21 +3,20 @@
 		margin: 0px;
 		padding: 0px;
 		width: 100%;
-		background-color: black;
-
-
+		background-color: #2B2B2B;
 	}
 
 	section {
-		margin: 0px;
-		padding: 0px;
+		margin-bottom: 20px;
+		
 	}
 
 
 	.wrapper {
 
 		
-		margin: 0px auto;
+		margin: -20px auto;
+		padding-top: 20px;
 		padding-left: 20px;
 		padding-right: 20px;
 		width: 80%;
@@ -26,7 +25,10 @@
 
 	}
 
-
+	.wrapper fieldset {
+		margin-bottom: 20px;
+		border: 1px solid #2B2B2B;
+	}
 
 	legend {
 
